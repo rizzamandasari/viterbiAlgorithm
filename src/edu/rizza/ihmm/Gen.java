@@ -5,6 +5,15 @@ public class Gen {
 	private Integer[] stopCodon;
 	private Integer[] codingRegion;
 
+	public Gen(Integer[] startCodon) {
+		this.startCodon = startCodon;
+	}
+
+	public Complete() {
+
+	}
+
+	// geter setter
 	public Integer[] getStartCodon() {
 		return startCodon;
 	}

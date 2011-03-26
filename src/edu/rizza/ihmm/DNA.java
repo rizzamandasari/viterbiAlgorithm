@@ -86,12 +86,32 @@ public class DNA {
 			sb = new StringBuilder(sequenceArray[i]);
 			String str = sb.append(sequenceArray[i + 1]).append(i + 2)
 					.toString();
+			// cari startcodon
 			if (str.equalsIgnoreCase("atg") || str.equalsIgnoreCase("gtg")) {
-
+				Integer[] startCodon = { new Integer(i), new Integer(i + 1),
+						new Integer(i + 2) };
+				genes.add(new Gen(startCodon));
 			}
 
 		}
 
 		return genes;
 	}
+
+	public stopCodon() {
+		StringBuilder sb = null;
+		for (int i = 0; i < (sequenceArray.length - 2); i++) {
+			sb = new StringBuilder(sequenceArray[i]);
+			String str = sb.append(sequenceArray[i + 1]).append(i + 2)
+					.toString();
+			if (str.equalsIgnoreCase("tag") || str.equalsIgnoreCase("tga")
+					|| str.equalsIgnoreCase("taa")) {
+				Integer[] startCodon = { new Integer(i), new Integer(i + 1),
+						new Integer(i + 2) };
+				genes.add(new Gen(stopCodon));
+			}
+			return;
+		}
+	}
+
 }
