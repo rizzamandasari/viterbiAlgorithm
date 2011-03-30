@@ -98,7 +98,7 @@ public class DNA {
 		return genes;
 	}
 
-	public stopCodon() {
+	public void stopCodon() {
 		StringBuilder sb = null;
 		for (int i = 0; i < (sequenceArray.length - 2); i++) {
 			sb = new StringBuilder(sequenceArray[i]);
@@ -108,7 +108,7 @@ public class DNA {
 					|| str.equalsIgnoreCase("taa")) {
 				Integer[] startCodon = { new Integer(i), new Integer(i + 1),
 						new Integer(i + 2) };
-				genes.add(new Gen(stopCodon));
+				genes.add(new Gen(stopCodon)); // error dsni
 			}
 			return;
 		}

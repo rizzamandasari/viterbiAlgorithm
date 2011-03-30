@@ -9,9 +9,9 @@ public class Gen {
 		this.startCodon = startCodon;
 	}
 
-	public Complete() {
+	// public Complete() {
 
-	}
+	// }
 
 	// geter setter
 	public Integer[] getStartCodon() {
