@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DNA {
@@ -12,7 +13,8 @@ public class DNA {
 	private String sequence;
 	private char[] sequenceArray;
 	private String filename;
-	private List<Gen> genes = null;
+	private List<Gen> genes = null;// ada lampu pke tnd silang
+	private List genes = new ArrayList(); // ada lampu pke tnd silang
 
 	public DNA(String filename) {
 		preprocessing(filename);
@@ -114,4 +116,10 @@ public class DNA {
 		}
 	}
 
+	public void isComplete() {
+		for(i = 0; i<genes., i++){
+			//error karna blm selese :D
+		}
+		
+	}
 }
