@@ -1,17 +1,26 @@
 package edu.rizza.ihmm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Gen {
 	private Integer[] startCodon;
 	private Integer[] stopCodon;
-	private Integer[] codingRegion;
+	private String[] codingRegion;
+	private final List<Gen> genes = new ArrayList<Gen>();
 
-	public Gen(Integer[] startCodon) {
-		this.startCodon = startCodon;
+	/*
+	 * public void isComplete() { Iterator<Gen> iterator = genes.iterator();
+	 * while (iterator.hasNext()) { if(genes.equals(stopCodon)){
+	 * 
+	 * }
+	 * 
+	 * }
+	 */
+
+	public boolean isCompete() {
+		return stopCodon.length != 0;
 	}
-
-	// public Complete() {
-
-	// }
 
 	// geter setter
 	public Integer[] getStartCodon() {
@@ -30,12 +39,16 @@ public class Gen {
 		this.stopCodon = stopCodon;
 	}
 
-	public Integer[] getCodingRegion() {
+	public String[] getCodingRegion() {
 		return codingRegion;
 	}
 
-	public void setCodingRegion(Integer[] codingRegion) {
+	public void setCodingRegion(String[] codingRegion) {
 		this.codingRegion = codingRegion;
+	}
+
+	public List<Gen> getGenes() {
+		return genes;
 	}
 
 }
