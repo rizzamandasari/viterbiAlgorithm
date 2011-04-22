@@ -109,12 +109,13 @@ public class DNA {
 							new Integer(stopCodonIndex - 1),
 							new Integer(stopCodonIndex) };
 					gen.setStopCodon(stopCodon);
-					String[] codingRegion = {};
+					String[] codingRegion = new String[700000];
 					int j = 0;
 					for (int i = startCodonIndex + 3; i < stopCodonIndex - 2; i = i + 3) {
 						codingRegion[j] = sequence.substring(i, i + 2);
 						j++;
 					}
+					// System.out.println(startCodonIndex);
 					gen.setCodingRegion(codingRegion);
 
 				} else {
