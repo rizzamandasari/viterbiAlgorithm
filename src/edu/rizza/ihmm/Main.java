@@ -10,6 +10,7 @@ public class Main {
 
 		// System.out.println(dna.getSequence());
 		System.out.println(dna.getGenes());
+		System.out.println(dna.)
 
 	}
 }
