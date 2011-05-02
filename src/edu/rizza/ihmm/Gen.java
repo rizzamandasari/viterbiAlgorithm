@@ -1,13 +1,10 @@
 package edu.rizza.ihmm;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Gen {
 	private Integer[] startCodon;
 	private Integer[] stopCodon;
 	private String[] codingRegion;
-	private final List<Gen> genes = new ArrayList<Gen>();
+	private String sequence;
 
 	/*
 	 * public void isComplete() { Iterator<Gen> iterator = genes.iterator();
@@ -47,8 +44,12 @@ public class Gen {
 		this.codingRegion = codingRegion;
 	}
 
-	public List<Gen> getGenes() {
-		return genes;
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
+	}
+
+	public String getSequence() {
+		return sequence;
 	}
 
 }

@@ -117,6 +117,8 @@ public class DNA {
 					}
 					// System.out.println(startCodonIndex);
 					gen.setCodingRegion(codingRegion);
+					gen.setSequence(sequence.substring(startCodonIndex,
+							stopCodonIndex));
 
 				} else {
 
@@ -128,6 +130,8 @@ public class DNA {
 							new Integer(stopCodonIndex - 1),
 							new Integer(stopCodonIndex) };
 					gen.setStopCodon(stopCodon);
+					gen.setSequence(sequence.substring(stopCodonIndex,
+							startCodonIndex));
 				}
 				genes.add(gen);
 			}
