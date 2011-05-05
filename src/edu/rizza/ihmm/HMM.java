@@ -50,19 +50,38 @@ public class HMM {
 		}
 
 		public void set(char name, double value) {
-			if (name == 'a') {
-				a = value;
+			switch (name) {
+			case 'a':
+				setA(value);
+				break;
+			case 't':
+				setT(value);
+				break;
+			case 'c':
+				setC(value);
+				break;
+			case 'g':
+				setG(value);
+				break;
 			}
 		}
 
 		public double get(char name) {
 
+			double value;
 			// kondisional
-			switch (x) {
-			case 0:
-
+			switch (name) {
+			case 'a':
+				return getA();
+			case 't':
+				return getT();
+			case 'c':
+				return getC();
+			case 'g':
+				return getG();
 			}
-			return x;
+			return 0;
+
 		}
 	}
 
@@ -72,9 +91,9 @@ public class HMM {
 	private final List<State> codingRegionAtypicals = new ArrayList<State>();
 
 	public HMM() {
-		startCodons.add(new State(0.1, 0.2, 0.3, 0.4));
-		startCodons.add(new State(0.2, 0.2, 0.3, 0.4));
-		startCodons.add(new State(0.3, 0.2, 0.3, 0.4));
+		startCodons.add(new State(0.8, 0.01, 0.01, 0.18));
+		startCodons.add(new State(0.01, 0.97, 0.01, 0.01));
+		startCodons.add(new State(0.01, 0.01, 0.01, 0.97));
 
 		codingRegionTypicals.add(new State(0.1, 0.2, 0.3, 0.4));
 		codingRegionTypicals.add(new State(0.1, 0.2, 0.3, 0.4));
