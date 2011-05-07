@@ -10,6 +10,6 @@ public class Main {
 		// System.out.println(dna.getSequence());
 		// System.out.println(dna.getGenes());
 		HMM hmm = new HMM();
-
+		System.out.println(hmm.train(dna));
 	}
 }

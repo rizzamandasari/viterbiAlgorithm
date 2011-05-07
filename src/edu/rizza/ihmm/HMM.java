@@ -10,65 +10,6 @@ public class HMM {
 		private double c;
 		private double g;
 
-		class Transition {
-			private double startatypical;
-			private double typicaltypical;
-			private double atypicalatypical;
-			private double typicalstop;
-			private double atypicalstop;
-
-			private double starttypical;
-
-			public double getStarttypical() {
-				return starttypical;
-			}
-
-			public void setStarttypical(double starttypical) {
-				this.starttypical = starttypical;
-			}
-
-			public double getStartatypical() {
-				return startatypical;
-			}
-
-			public void setStartatypical(double startatypical) {
-				this.startatypical = startatypical;
-			}
-
-			public double getTypicaltypical() {
-				return typicaltypical;
-			}
-
-			public void setTypicaltypical(double typicaltypical) {
-				this.typicaltypical = typicaltypical;
-			}
-
-			public double getAtypicalatypical() {
-				return atypicalatypical;
-			}
-
-			public void setAtypicalatypical(double atypicalatypical) {
-				this.atypicalatypical = atypicalatypical;
-			}
-
-			public double getTypicalstop() {
-				return typicalstop;
-			}
-
-			public void setTypicalstop(double typicalstop) {
-				this.typicalstop = typicalstop;
-			}
-
-			public double getAtypicalstop() {
-				return atypicalstop;
-			}
-
-			public void setAtypicalstop(double atypicalstop) {
-				this.atypicalstop = atypicalstop;
-			}
-
-		}
-
 		public State(double a, double t, double c, double g) {
 			this.a = a;
 			this.t = t;
@@ -144,11 +85,70 @@ public class HMM {
 		}
 	}
 
+	class Transition {
+		private double startAtypical;
+		private double startTypical;
+		private double typicalTypical;
+		private double atypicalAtypical;
+		private double typicalStop;
+		private double atypicalStop;
+
+		public double getStartTypical() {
+			return startTypical;
+		}
+
+		public void setStartTypical(double startTypical) {
+			this.startTypical = startTypical;
+		}
+
+		public double getStartAtypical() {
+			return startAtypical;
+		}
+
+		public void setStartAtypical(double startAtypical) {
+			this.startAtypical = startAtypical;
+		}
+
+		public double getTypicalTypical() {
+			return typicalTypical;
+		}
+
+		public void setTypicalTypical(double typicalTypical) {
+			this.typicalTypical = typicalTypical;
+		}
+
+		public double getAtypicalAtypical() {
+			return atypicalAtypical;
+		}
+
+		public void setAtypicalAtypical(double atypicalAtypical) {
+			this.atypicalAtypical = atypicalAtypical;
+		}
+
+		public double getTypicalStop() {
+			return typicalStop;
+		}
+
+		public void setTypicalStop(double typicalStop) {
+			this.typicalStop = typicalStop;
+		}
+
+		public double getAtypicalStop() {
+			return atypicalStop;
+		}
+
+		public void setAtypicalStop(double atypicalStop) {
+			this.atypicalStop = atypicalStop;
+		}
+
+	}
+
 	private final List<State> startCodons = new ArrayList<State>();
 	private final List<State> stopCodons = new ArrayList<State>();
 	private final List<State> codingRegionTypicals = new ArrayList<State>();
 	private final List<State> codingRegionAtypicals = new ArrayList<State>();
-	private tp = new Transition();
+	private final Transition startTypical = new Transition();
+	private final Transition startAtypical = new Transition();
 
 	public HMM() {
 		startCodons.add(new State(0.8, 0.01, 0.01, 0.18));
@@ -181,21 +181,31 @@ public class HMM {
 					* startCodons.get(2).get(gen.getBasaStartCodon()[2]);
 
 			int index = 0;
-			for (char neuclotida : gen.getBasaCodingRegion()) {
+			for (char basa : gen.getBasaCodingRegion()) {
 				if (index % 3 == 0) {
 					if (gen.isTypical()) {
-						codingRegionTypicals.get(0).get(neuclotida);
-						codingRegionTypicals.get(1).get(neuclotida);
-						codingRegionTypicals.get(2).get(neuclotida);
-					} else { // if atypical
-						codingRegionTypicals.get(0).get(neuclotida);
-						codingRegionTypicals.get(1).get(neuclotida);
-						codingRegionTypicals.get(2).get(neuclotida);
+						codingRegionTypicals.get(0).get(basa);
+						codingRegionTypicals.get(1).get(basa);
+						codingRegionTypicals.get(2).get(basa);
+
+						double typ = codingRegionTypicals.get(0).get(basa)
+								* codingRegionTypicals.get(1).get(basa)
+								* codingRegionTypicals.get(2).get(basa);
+					} else {
+						codingRegionAtypicals.get(0).get(basa);
+						codingRegionAtypicals.get(1).get(basa);
+						codingRegionAtypicals.get(2).get(basa);
+
+						double atyp = codingRegionAtypicals.get(0).get(basa)
+								* codingRegionAtypicals.get(1).get(basa)
+								* codingRegionAtypicals.get(2).get(basa);
 					}
 				}
+
 				index++;
+
 			}
-			// untuk mengambil
+
 			stopCodons.get(0).get(gen.getBasaStopCodon()[0]);
 			stopCodons.get(1).get(gen.getBasaStopCodon()[1]);
 			stopCodons.get(2).get(gen.getBasaStopCodon()[2]);
@@ -221,6 +231,14 @@ public class HMM {
 
 	public List<State> getCodingRegionAtypicals() {
 		return codingRegionAtypicals;
+	}
+
+	public Transition getStartTypical() {
+		return startTypical;
+	}
+
+	public Transition getStartAtypical() {
+		return startAtypical;
 	}
 
 }
