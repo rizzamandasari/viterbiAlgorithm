@@ -147,63 +147,80 @@ public class HMM {
 	private final List<State> stopCodons = new ArrayList<State>();
 	private final List<State> codingRegionTypicals = new ArrayList<State>();
 	private final List<State> codingRegionAtypicals = new ArrayList<State>();
-	private final Transition startTypical = new Transition();
-	private final Transition startAtypical = new Transition();
+	private final Transition transition = new Transition();
 
 	public HMM() {
 		startCodons.add(new State(0.8, 0.01, 0.01, 0.18));
 		startCodons.add(new State(0.01, 0.97, 0.01, 0.01));
 		startCodons.add(new State(0.01, 0.01, 0.01, 0.97));
 
-		codingRegionTypicals.add(new State(0.1, 0.2, 0.3, 0.4));
-		codingRegionTypicals.add(new State(0.1, 0.2, 0.3, 0.4));
-		codingRegionTypicals.add(new State(0.1, 0.2, 0.3, 0.4));
+		codingRegionTypicals.add(new State(0.25, 0.25, 0.25, 0.25));
+		codingRegionTypicals.add(new State(0.25, 0.25, 0.25, 0.25));
+		codingRegionTypicals.add(new State(0.25, 0.25, 0.25, 0.25));
 
-		codingRegionAtypicals.add(new State(0.1, 0.2, 0.3, 0.4));
-		codingRegionAtypicals.add(new State(0.1, 0.2, 0.3, 0.4));
-		codingRegionAtypicals.add(new State(0.1, 0.2, 0.3, 0.4));
+		codingRegionAtypicals.add(new State(0.25, 0.25, 0.25, 0.25));
+		codingRegionAtypicals.add(new State(0.25, 0.25, 0.25, 0.25));
+		codingRegionAtypicals.add(new State(0.25, 0.25, 0.25, 0.25));
 
+		stopCodons.add(new State(0.01, 0.97, 0.01, 0.01));
+		stopCodons.add(new State(0.97, 0.01, 0.01, 0.01));
 		stopCodons.add(new State(0.1, 0.2, 0.3, 0.4));
-		stopCodons.add(new State(0.1, 0.2, 0.3, 0.4));
-		stopCodons.add(new State(0.1, 0.2, 0.3, 0.4));
+
+		transition.setStartAtypical(0.8);
+		transition.setStartTypical(0.2);
+		transition.setTypicalTypical(0.8);
+		transition.setAtypicalAtypical(0.1);
+		transition.setTypicalStop(0.2);
+		transition.setAtypicalStop(0.9);
 
 	}
 
 	public void train(DNA dna) {
 		for (Gen gen : dna.getGenes()) {
 			// untuk mengambil probabilitas startCodon
-			startCodons.get(0).get(gen.getBasaStartCodon()[0]);
-			startCodons.get(1).get(gen.getBasaStartCodon()[1]);
-			startCodons.get(2).get(gen.getBasaStartCodon()[2]);
+			double p = startCodons.get(0).get(gen.getBasaStartCodon()[0]);
+			double q = startCodons.get(1).get(gen.getBasaStartCodon()[1]);
+			double r = startCodons.get(2).get(gen.getBasaStartCodon()[2]);
 
-			double alpha1 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
-					* startCodons.get(1).get(gen.getBasaStartCodon()[1])
-					* startCodons.get(2).get(gen.getBasaStartCodon()[2]);
+			double alpha1;
+			alpha1 = p * q * r;
 
-			int index = 0;
-			for (char basa : gen.getBasaCodingRegion()) {
-				if (index % 3 == 0) {
-					if (gen.isTypical()) {
-						codingRegionTypicals.get(0).get(basa);
-						codingRegionTypicals.get(1).get(basa);
-						codingRegionTypicals.get(2).get(basa);
+			{
+				int index = 0;
+				for (char basa : gen.getBasaCodingRegion()) {
+					if (index % 3 == 0) {
+						if (gen.isTypical()) {
+							codingRegionTypicals.get(0).get(basa);
+							codingRegionTypicals.get(1).get(basa);
+							codingRegionTypicals.get(2).get(basa);
 
-						double typ = codingRegionTypicals.get(0).get(basa)
-								* codingRegionTypicals.get(1).get(basa)
-								* codingRegionTypicals.get(2).get(basa);
-					} else {
-						codingRegionAtypicals.get(0).get(basa);
-						codingRegionAtypicals.get(1).get(basa);
-						codingRegionAtypicals.get(2).get(basa);
+							double typ;
+							typ = codingRegionTypicals.get(0).get(basa)
+									* codingRegionTypicals.get(1).get(basa)
+									* codingRegionTypicals.get(2).get(basa);
+						} else {
+							codingRegionAtypicals.get(0).get(basa);
+							codingRegionAtypicals.get(1).get(basa);
+							codingRegionAtypicals.get(2).get(basa);
 
-						double atyp = codingRegionAtypicals.get(0).get(basa)
-								* codingRegionAtypicals.get(1).get(basa)
-								* codingRegionAtypicals.get(2).get(basa);
+							double atyp;
+							atyp = codingRegionAtypicals.get(0).get(basa)
+									* codingRegionAtypicals.get(1).get(basa)
+									* codingRegionAtypicals.get(2).get(basa);
+						}
 					}
+
+					index++;
+
 				}
 
-				index++;
+				double alpha21;
+				double alpha22;
 
+				alpha21 = typ * alpha1 * transition.getStartTypical()
+						* transition.getTypicalTypical();
+				alpha22 = atyp * alpha1 * transition.getStartAtypical()
+						* transition.getAtypicalAtypical();
 			}
 
 			stopCodons.get(0).get(gen.getBasaStopCodon()[0]);
@@ -231,14 +248,6 @@ public class HMM {
 
 	public List<State> getCodingRegionAtypicals() {
 		return codingRegionAtypicals;
-	}
-
-	public Transition getStartTypical() {
-		return startTypical;
-	}
-
-	public Transition getStartAtypical() {
-		return startAtypical;
 	}
 
 }
