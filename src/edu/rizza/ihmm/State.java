@@ -1,56 +1,82 @@
 package edu.rizza.ihmm;
 
-public class State {
+class State {
+	private double a;
+	private double t;
+	private double c;
+	private double g;
 
-	private double startState;
-	private double codState;
-	private double codAtState;
-	private double stopState;
-
-	// bikin single ton
-
-	State() {
-
+	public State(double a, double t, double c, double g) {
+		this.a = a;
+		this.t = t;
+		this.c = c;
+		this.g = g;
 	}
 
-	private State instance;
-
-	public State getInstance() {
-		return instance = instance != null ? new State() : instance;
+	public double getA() {
+		return a;
 	}
 
-	public void setStartState(double startState) {
-		this.startState = startState;
-		double a = 0.8;
-
+	public void setA(double a) {
+		this.a = a;
 	}
 
-	public double getStartState() {
-		return startState;
+	public double getT() {
+		return t;
 	}
 
-	public void setCodState(double codState) {
-		this.codState = codState;
+	public void setT(double t) {
+		this.t = t;
 	}
 
-	public double getCodState() {
-		return codState;
+	public double getC() {
+		return c;
 	}
 
-	public void setStopState(double stopState) {
-		this.stopState = stopState;
+	public void setC(double c) {
+		this.c = c;
 	}
 
-	public double getStopState() {
-		return stopState;
+	public double getG() {
+		return g;
 	}
 
-	public void setCodAtState(double codAtState) {
-		this.codAtState = codAtState;
+	public void setG(double g) {
+		this.g = g;
 	}
 
-	public double getCodAtState() {
-		return codAtState;
+	public void set(char name, double value) {
+		switch (name) {
+		case 'a':
+			setA(value);
+			break;
+		case 't':
+			setT(value);
+			break;
+		case 'c':
+			setC(value);
+			break;
+		case 'g':
+			setG(value);
+			break;
+		}
 	}
 
+	public double get(char name) {
+
+		double value;
+		// kondisional
+		switch (name) {
+		case 'a':
+			return getA();
+		case 't':
+			return getT();
+		case 'c':
+			return getC();
+		case 'g':
+			return getG();
+		}
+		return 0;
+
+	}
 }
