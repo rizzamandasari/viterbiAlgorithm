@@ -38,9 +38,11 @@ public class HMM {
 	}
 
 	public void fwdBwd(DNA dna) {
+		double alpha1 = 1, alpha21 = 1, alpha22 = 1, alpha31 = 1, alpha32 = 1, beta4 = 1, beta31, beta32, beta21 = 1, beta22 = 1, beta11 = 1, beta12 = 1;
+		Gen gene = new Gen();
 		for (Gen gen : dna.getGenes()) {
 			// untuk mengambil probabilitas startCodon
-			double alpha1 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
+			alpha1 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
 					* startCodons.get(1).get(gen.getBasaStartCodon()[1])
 					* startCodons.get(2).get(gen.getBasaStartCodon()[2]);
 
@@ -68,17 +70,17 @@ public class HMM {
 			// double alpha21;
 			// double alpha22;
 
-			double alpha21 = typ * alpha1 * transition.getStartTypical()
+			alpha21 = typ * alpha1 * transition.getStartTypical()
 					* transition.getTypicalTypical(); // error
-			double alpha22 = atyp * alpha1 * transition.getStartAtypical()
+			alpha22 = atyp * alpha1 * transition.getStartAtypical()
 					* transition.getAtypicalAtypical(); // error
 
-			double alpha31 = stopCodons.get(0).get(gen.getBasaStopCodon()[0])
+			alpha31 = stopCodons.get(0).get(gen.getBasaStopCodon()[0])
 					* stopCodons.get(1).get(gen.getBasaStopCodon()[1])
 					* stopCodons.get(2).get(gen.getBasaStopCodon()[2])
 					* transition.getTypicalStop() * alpha21;
 
-			double alpha32 = stopCodons.get(0).get(gen.getBasaStopCodon()[0])
+			alpha32 = stopCodons.get(0).get(gen.getBasaStopCodon()[0])
 					* stopCodons.get(1).get(gen.getBasaStopCodon()[1])
 					* stopCodons.get(2).get(gen.getBasaStopCodon()[2])
 					* transition.getAtypicalStop() * alpha22;
@@ -89,15 +91,12 @@ public class HMM {
 		}
 
 		for (Gen gen : dna.getGenes()) {
-			// stop codon
-			double beta4 = 1;
-
 			// coding region
-			double beta31 = stopCodons.get(0).get(gen.getBasaStopCodon()[0])
+			beta31 = stopCodons.get(0).get(gen.getBasaStopCodon()[0])
 					* stopCodons.get(1).get(gen.getBasaStopCodon()[1])
 					* stopCodons.get(2).get(gen.getBasaStopCodon()[2])
 					* transition.getTypicalStop();
-			double beta32 = stopCodons.get(0).get(gen.getBasaStopCodon()[0])
+			beta32 = stopCodons.get(0).get(gen.getBasaStopCodon()[0])
 					* stopCodons.get(1).get(gen.getBasaStopCodon()[1])
 					* stopCodons.get(2).get(gen.getBasaStopCodon()[2])
 					* transition.getAtypicalStop();
@@ -125,23 +124,73 @@ public class HMM {
 				index++;
 			}
 			// start
-			double beta21 = b_typ * transition.getTypicalTypical()
+			beta21 = b_typ * transition.getTypicalTypical()
 					* transition.getStartTypical() * beta31;
-			double beta22 = b_atyp * transition.getAtypicalAtypical()
+			beta22 = b_atyp * transition.getAtypicalAtypical()
 					* transition.getStartAtypical() * beta32;
 			// begin
-			double beta11 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
+			beta11 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
 					* startCodons.get(1).get(gen.getBasaStartCodon()[1])
 					* startCodons.get(2).get(gen.getBasaStartCodon()[2])
 					* beta21;
-			double beta12 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
+			beta12 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
 					* startCodons.get(1).get(gen.getBasaStartCodon()[1])
 					* startCodons.get(2).get(gen.getBasaStartCodon()[2])
 					* beta22;
 			System.out.println("beta typical: " + beta11);
 			System.out.println("beta atypical: " + beta12);
-		}
 
+			// ================>step 5 tansition prob
+		}
+		double fwd_bwd_typ = alpha31 + beta11;
+		double fwd_bwd_atyp = alpha32 + beta12;
+		double prob_s2typ = (alpha1
+				* startCodons.get(0).get(gene.getBasaStartCodon()[2])
+				* codingRegionTypicals.get(0)
+						.get(gene.getBasaCodingRegion()[0]) * beta21)
+				/ (fwd_bwd_typ);
+		double prob_s2atyp = (alpha1
+				* startCodons.get(0).get(gene.getBasaStartCodon()[0])
+				* codingRegionAtypicals.get(0).get(
+						gene.getBasaCodingRegion()[1]) * beta22)
+				/ (fwd_bwd_typ);
+
+		double prob_typ2typ = (alpha21
+				* codingRegionTypicals.get(0)
+						.get(gene.getBasaCodingRegion()[2])
+				* codingRegionTypicals.get(0)
+						.get(gene.getBasaCodingRegion()[0]) * beta22)
+				/ (fwd_bwd_typ);
+
+		double prob_atyp2atyp = (alpha21
+				* codingRegionTypicals.get(0)
+						.get(gene.getBasaCodingRegion()[2])
+				* codingRegionTypicals.get(0)
+						.get(gene.getBasaCodingRegion()[0]) * beta22)
+				/ (fwd_bwd_typ);
+
+		double prob_typ2end = (alpha21
+				* codingRegionTypicals.get(0)
+						.get(gene.getBasaCodingRegion()[2])
+				* codingRegionTypicals.get(0)
+						.get(gene.getBasaCodingRegion()[0]) * beta22)
+				/ (fwd_bwd_typ);
+
+		double prob_atyp2end = (alpha22
+				* codingRegionTypicals.get(0)
+						.get(gene.getBasaCodingRegion()[2])
+				* codingRegionTypicals.get(0)
+						.get(gene.getBasaCodingRegion()[0]) * beta22)
+				/ (fwd_bwd_typ);
+
+		double t_prob_s2typ = prob_s2typ / (prob_s2typ + prob_s2atyp);
+		double t_prob_s2atyp = prob_s2atyp / (prob_s2typ + prob_s2atyp);
+		double t_prob_ty2typ = prob_typ2typ / (prob_typ2typ + prob_typ2end);
+		double t_prob_ty2end = prob_typ2end / (prob_typ2typ + prob_typ2end);
+		double t_prob_aty2atyp = prob_atyp2atyp
+				/ (prob_atyp2atyp + prob_atyp2end);
+		double t_prob_atyp2end = prob_atyp2end
+				/ (prob_atyp2atyp + prob_atyp2end);
 	}
 
 	public List<State> getStartCodons() {
