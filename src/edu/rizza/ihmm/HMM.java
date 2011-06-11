@@ -76,12 +76,11 @@ public class HMM {
 				char b_basa = gen.getBasaCodingRegion()[gen
 						.getBasaCodingRegion().length
 						- i - 1];
-				j = i % 3;
 				if (index % 3 == 0) {
 					// if (gen.isTypical()) {
-					alphaTypical2 *= codingRegionTypicals.get(j).get(basa);
-					// * codingRegionTypicals.get(j).get(basa)
-					// * codingRegionTypicals.get(j).get(basa) * 100;
+					alphaTypical2 *= codingRegionTypicals.get(0).get(basa)
+							* codingRegionTypicals.get(1).get(basa)
+							* codingRegionTypicals.get(2).get(basa) * 100;
 
 					betaTypical2 *= codingRegionTypicals.get(0).get(b_basa)
 							* codingRegionTypicals.get(1).get(b_basa)
@@ -95,7 +94,6 @@ public class HMM {
 							* codingRegionAtypicals.get(2).get(b_basa) * 100;
 					// }
 				}
-				index++;
 			}
 			// double x = Math.pow(10, 308);
 
