@@ -1,5 +1,8 @@
 package edu.rizza.ihmm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Gen {
 	private Integer[] startCodon;
 	private Integer[] stopCodon;
@@ -9,6 +12,22 @@ public class Gen {
 	private char[] basaCodingRegion;
 	private char[] basaStopCodon;
 
+	private final List<Double> alphaTypical1 = new ArrayList<Double>();
+	private final List<Double> alphaTypical2 = new ArrayList<Double>();
+	private final List<Double> alphaTypical3 = new ArrayList<Double>();
+
+	private final List<Double> betaTypical1 = new ArrayList<Double>();
+	private final List<Double> betaTypical2 = new ArrayList<Double>();
+	private final List<Double> betaTypical3 = new ArrayList<Double>();
+
+	private final List<Double> alphaATypical1 = new ArrayList<Double>();
+	private final List<Double> alphaATypical2 = new ArrayList<Double>();
+	private final List<Double> alphaATypical3 = new ArrayList<Double>();
+
+	private final List<Double> betaATypical1 = new ArrayList<Double>();
+	private final List<Double> betaATypical2 = new ArrayList<Double>();
+	private final List<Double> betaATypical3 = new ArrayList<Double>();
+
 	/*
 	 * public void isComplete() { Iterator<Gen> iterator = genes.iterator();
 	 * while (iterator.hasNext()) { if(genes.equals(stopCodon)){
@@ -17,6 +36,54 @@ public class Gen {
 	 * 
 	 * }
 	 */
+
+	public List<Double> getAlphaTypical1() {
+		return alphaTypical1;
+	}
+
+	public List<Double> getAlphaTypical2() {
+		return alphaTypical2;
+	}
+
+	public List<Double> getAlphaTypical3() {
+		return alphaTypical3;
+	}
+
+	public List<Double> getBetaTypical1() {
+		return betaTypical1;
+	}
+
+	public List<Double> getBetaTypical2() {
+		return betaTypical2;
+	}
+
+	public List<Double> getBetaTypical3() {
+		return betaTypical3;
+	}
+
+	public List<Double> getAlphaATypical1() {
+		return alphaATypical1;
+	}
+
+	public List<Double> getAlphaATypical2() {
+		return alphaATypical2;
+	}
+
+	public List<Double> getAlphaATypical3() {
+		return alphaATypical3;
+	}
+
+	public List<Double> getBetaATypical1() {
+		return betaATypical1;
+	}
+
+	public List<Double> getBetaATypical2() {
+		return betaATypical2;
+	}
+
+	public List<Double> getBetaATypical3() {
+		return betaATypical3;
+	}
 
 	public boolean isCompete() {
 		return stopCodon.length != 0;

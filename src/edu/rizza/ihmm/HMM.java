@@ -50,11 +50,23 @@ public class HMM {
 			betaTypical1 = betaTypical2 = betaTypical3 = 1;
 			betaATypical1 = betaATypical2 = betaATypical3 = 1;
 
+			int[][][] typicalStates = {
+					{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } },
+					{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } },
+					{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } } };
+			int[][][] atypicalState = {
+					{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } },
+					{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } },
+					{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } } };
+
 			// hitung alpha1
 			alphaTypical1 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
 					* startCodons.get(1).get(gen.getBasaStartCodon()[1])
 					* startCodons.get(2).get(gen.getBasaStartCodon()[2]);
+			gen.getAlphaTypical1().set(index, alphaTypical1);
 			alphaATypical1 = alphaTypical1;
+			gen.getAlphaTypical1().set(index, alphaATypical1);
+
 			// end hitung alpha1
 
 			// hitung beta3
@@ -62,13 +74,24 @@ public class HMM {
 					* stopCodons.get(1).get(gen.getBasaStopCodon()[1])
 					* stopCodons.get(2).get(gen.getBasaStopCodon()[2])
 					* transition.getTypicalStop();
+			gen.getAlphaTypical1().set(index, betaTypical1);
 			betaATypical3 = stopCodons.get(0).get(gen.getBasaStopCodon()[0])
 					* stopCodons.get(1).get(gen.getBasaStopCodon()[1])
 					* stopCodons.get(2).get(gen.getBasaStopCodon()[2])
 					* transition.getAtypicalStop();
+			gen.getAlphaTypical1().set(index, betaATypical1);
 			// end hitung beta 3
 
 			// hitung alpha 2 dan beta 2
+			alphaTypical2 *= transition.getStartTypical()
+					* transition.getTypicalTypical() * alphaTypical1;
+			alphaATypical2 *= transition.getStartAtypical()
+					* transition.getAtypicalAtypical() * alphaATypical1;
+			betaTypical2 *= transition.getTypicalTypical()
+					* transition.getStartTypical() * betaTypical3;
+			betaATypical2 *= transition.getAtypicalAtypical()
+					* transition.getStartAtypical() * betaATypical3;
+
 			int index = 0;
 			int j = 0;
 			for (int i = 0; i < gen.getBasaCodingRegion().length; i++) {
@@ -81,30 +104,40 @@ public class HMM {
 					alphaTypical2 *= codingRegionTypicals.get(0).get(basa)
 							* codingRegionTypicals.get(1).get(basa)
 							* codingRegionTypicals.get(2).get(basa) * 100;
+					gen.getAlphaTypical2().set(index, alphaTypical2);
 
 					betaTypical2 *= codingRegionTypicals.get(0).get(b_basa)
 							* codingRegionTypicals.get(1).get(b_basa)
 							* codingRegionTypicals.get(2).get(b_basa) * 100;
+					gen.getAlphaTypical2().set(index, betaTypical2);
 					// } else {
 					alphaATypical2 *= codingRegionAtypicals.get(0).get(basa)
 							* codingRegionAtypicals.get(1).get(basa)
 							* codingRegionAtypicals.get(2).get(basa) * 100;
+					gen.getAlphaTypical2().set(index, alphaATypical2);
 					betaATypical2 *= codingRegionAtypicals.get(0).get(b_basa)
 							* codingRegionAtypicals.get(1).get(b_basa)
 							* codingRegionAtypicals.get(2).get(b_basa) * 100;
+					gen.getAlphaTypical2().set(index, betaATypical2);
 					// }
+				}
+				switch (basa) {
+				case 'a':
+					typicalStates[1][index % 3][0]++;
+					break;
+				case 't':
+					typicalStates[1][index % 3][1]++;
+					break;
+				case 'c':
+					typicalStates[1][index % 3][2]++;
+					break;
+				case 'g':
+					typicalStates[1][index % 3][3]++;
+					break;
 				}
 			}
 			// double x = Math.pow(10, 308);
 
-			alphaTypical2 *= transition.getStartTypical()
-					* transition.getTypicalTypical() * alphaTypical1;
-			alphaATypical2 *= transition.getStartAtypical()
-					* transition.getAtypicalAtypical() * alphaATypical1;
-			betaTypical2 *= transition.getTypicalTypical()
-					* transition.getStartTypical() * betaTypical3;
-			betaATypical2 *= transition.getAtypicalAtypical()
-					* transition.getStartAtypical() * betaATypical3;
 			// end hitung alpha2 dan beta 2
 
 			// hitung alpha3
@@ -113,10 +146,12 @@ public class HMM {
 					* stopCodons.get(1).get(gen.getBasaStopCodon()[1])
 					* stopCodons.get(2).get(gen.getBasaStopCodon()[2])
 					* transition.getTypicalStop() * alphaTypical2;
+			gen.getAlphaTypical1().set(index, alphaTypical3);
 			alphaATypical3 = stopCodons.get(0).get(gen.getBasaStopCodon()[0])
 					* stopCodons.get(1).get(gen.getBasaStopCodon()[1])
 					* stopCodons.get(2).get(gen.getBasaStopCodon()[2])
 					* transition.getAtypicalStop() * alphaATypical2;
+			gen.getAlphaTypical1().set(index, alphaATypical3);
 			// end hitung alpha3
 
 			// hitung beta1
@@ -124,10 +159,12 @@ public class HMM {
 					* startCodons.get(1).get(gen.getBasaStartCodon()[1])
 					* startCodons.get(2).get(gen.getBasaStartCodon()[2])
 					* betaTypical2;
+			gen.getAlphaTypical1().set(index, betaTypical1);
 			betaATypical1 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
 					* startCodons.get(1).get(gen.getBasaStartCodon()[1])
 					* startCodons.get(2).get(gen.getBasaStartCodon()[2])
 					* betaATypical2;
+			gen.getAlphaTypical1().set(index, betaATypical1);
 			// end hitung beta1
 
 			System.out.println("Alpha Typical 1: " + alphaTypical1);
