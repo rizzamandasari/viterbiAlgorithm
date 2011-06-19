@@ -6,7 +6,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		DNA dna = new DNA("file/seqNC_011812.txt", "file/seqNC_011812-gene.txt");
+		DNA dna = new DNA("file/c.txt", "file/c-gene.txt");
 		// System.out.println(dna.getSequence());
 		// System.out.println(dna.getGenes());
 		HMM hmm = new HMM();

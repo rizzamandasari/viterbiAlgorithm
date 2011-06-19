@@ -162,4 +162,65 @@ public class Gen {
 		return basaStopCodon;
 	}
 
+	public double sumStateTypical(int state) {
+		double sumState = 0;
+
+		int index = 0;
+		for (double alpha : alphaTypical2) {
+			if (index % 3 == state) {
+				sumState += alpha
+						* betaTypical2.get(alphaTypical2.size() - index - 1);
+				// out of bound
+			}
+			index++;
+		}
+		return sumState;
+	}
+
+	public double sumStateATypical(int state) {
+		double sumState = 0;
+
+		int index = 0;
+
+		for (double alpha : alphaATypical2) {
+			if (index % 3 == state) {
+				sumState += alpha
+						* betaATypical2.get(alphaATypical2.size() - index - 1);
+			}
+			index++;
+		}
+		return sumState;
+
+	}
+
+	public double sumCharTypical(int state, char c) {
+
+		double sumChar = 0;
+
+		int index = 0;
+		for (double alpha : alphaTypical2) {
+			if (index % 3 == state && basaCodingRegion[index] == c) {
+				sumChar += alpha
+						* betaTypical2.get(alphaTypical2.size() - 1 - index);
+			}
+			index++;
+		}
+		return sumChar;
+
+	}
+
+	public double sumCharATypical(int state, char c) {
+		double sumChar = 0;
+
+		int index = 0;
+		for (double alpha : alphaTypical2) {
+			if (index % 3 == state && basaCodingRegion[index] == c) {
+				sumChar += alpha
+						* betaTypical2.get(alphaTypical2.size() - 1 - index);
+			}
+			index++;
+		}
+		return sumChar;
+	}
+
 }
