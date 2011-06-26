@@ -1,5 +1,3 @@
-package edu.rizza.ihmm;
-
 class Transition {
 	private double startAtypical;
 	private double startTypical;

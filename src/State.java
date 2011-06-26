@@ -1,5 +1,3 @@
-package edu.rizza.ihmm;
-
 class State {
 	private double a;
 	private double t;

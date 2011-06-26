@@ -1,5 +1,3 @@
-package edu.rizza.ihmm;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -223,4 +221,11 @@ public class Gen {
 		return sumChar;
 	}
 
+	public double sumStateStart() {
+
+		double sumState = 0;
+		sumState = basaStartCodon[0];
+
+		return sumState;
+	}
 }

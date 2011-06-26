@@ -1,5 +1,3 @@
-package edu.rizza.ihmm;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,14 +11,20 @@ public class DNA {
 	private String sequence;
 	private char[] sequenceArray;
 	private String filename;
-	private final String genFilename;
+	private String genFilename;
 	private List<Gen> genes = new ArrayList<Gen>();
+	private final List<Gen> predictionGenes = new ArrayList<Gen>();
 
 	public DNA(String filename, String genFilename) {
 		this.filename = filename;
 		this.genFilename = genFilename;
 		preprocessing();
 
+	}
+
+	public DNA(String filename) {
+		this.filename = filename;
+		preprocessing();
 	}
 
 	private void preprocessing() {
@@ -109,7 +113,7 @@ public class DNA {
 							new Integer(stopCodonIndex - 1),
 							new Integer(stopCodonIndex) };
 					gen.setStopCodon(stopCodon);
-					String[] codingRegion = new String[700000];
+					String[] codingRegion = new String[1000000];
 					int j = 0;
 					for (int i = startCodonIndex + 3; i < stopCodonIndex - 2; i = i + 3) {
 						codingRegion[j] = sequence.substring(i, i + 2);
@@ -132,6 +136,7 @@ public class DNA {
 					gen.setStopCodon(stopCodon);
 					gen.setSequence(sequence.substring(stopCodonIndex,
 							startCodonIndex));
+
 				}
 				genes.add(gen);
 			}
@@ -144,6 +149,53 @@ public class DNA {
 		}
 
 		return genes;
+	}
+
+	public List<Gen> getPredictionGenes() {
+		// cari startcodon
+		StringBuilder sb = null;
+		for (int i = 0; i < sequenceArray.length; i++) {
+			if (i < sequenceArray.length - 2) {
+				sb = new StringBuilder();
+				sb.append(sequenceArray[i]).append(sequenceArray[i + 1])
+						.append(sequenceArray[i + 2]);
+				if (sb.toString().equalsIgnoreCase("atg")
+						&& i < sequenceArray.length - 180) {
+					Integer[] startCodon = { new Integer(i),
+							new Integer(i + 1), new Integer(i + 2) };
+					for (int j = i + 180; (j < i + 2999)
+							&& (j < sequenceArray.length); j++) {
+						sb = new StringBuilder();
+						sb.append(sequenceArray[j - 2]).append(
+								sequenceArray[j - 1]).append(sequenceArray[j]);
+						if (sb.toString().equalsIgnoreCase("tga")
+								|| sb.toString().equalsIgnoreCase("taa")
+								|| sb.toString().equalsIgnoreCase("tag")) {
+							Gen gen = new Gen();
+							gen.setStartCodon(startCodon);
+							Integer[] stopCodon = { new Integer(j - 2),
+									new Integer(j - 1), new Integer(j) };
+							gen.setStopCodon(stopCodon);
+							// coding region
+							int x = 0;
+							String[] codingRegion = new String[5000];
+							for (int k = i + 3; k < j - 2; k = k + 3) {
+
+								codingRegion[x] = sequence.substring(k, k + 2);
+								x++;
+							}
+							gen.setSequence(sequence.substring(i, j + 1));
+							predictionGenes.add(gen);
+
+						}
+					}
+
+				}
+
+			}
+
+		}
+		return predictionGenes;
 	}
 	/*
 	 * public void stopCodon() { StringBuilder sb = null; for (int i = 0; i <
