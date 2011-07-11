@@ -105,6 +105,7 @@ public class DNA {
 				int startCodonIndex = Integer.parseInt(str[0]);
 				int stopCodonIndex = Integer.parseInt(str[1]);
 				if (stopCodonIndex > startCodonIndex) {
+
 					Integer[] startCodon = { new Integer(startCodonIndex),
 							new Integer(startCodonIndex + 1),
 							new Integer(startCodonIndex + 2) };
@@ -121,6 +122,10 @@ public class DNA {
 					}
 					// System.out.println(startCodonIndex);
 					gen.setCodingRegion(codingRegion);
+					// sequence = sequence.replaceAll("a", "p").replaceAll("t",
+					// "q").replaceAll("g", "r").replaceAll("c", "s")
+					// .replaceAll("p", "t").replaceAll("q", "a")
+					// .replaceAll("r", "c").replaceAll("s", "g");
 					gen.setSequence(sequence.substring(startCodonIndex,
 							stopCodonIndex));
 
@@ -139,6 +144,7 @@ public class DNA {
 
 				}
 				genes.add(gen);
+
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

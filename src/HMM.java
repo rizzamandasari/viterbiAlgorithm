@@ -9,6 +9,12 @@ public class HMM {
 	private final List<State> codingRegionAtypicals = new ArrayList<State>();
 	private final Transition transition = new Transition();
 
+	public HMM(boolean probabilitySet) {
+		if (probabilitySet) {
+			probability();
+		}
+	}
+
 	public HMM() {
 		startCodons.add(new State(0.8, 0.01, 0.01, 0.18));
 		startCodons.add(new State(0.01, 0.97, 0.01, 0.01));
@@ -18,24 +24,25 @@ public class HMM {
 		codingRegionTypicals.add(new State(0.25, 0.25, 0.25, 0.25));
 		codingRegionTypicals.add(new State(0.25, 0.25, 0.25, 0.25));
 
-		codingRegionAtypicals.add(new State(0.25, 0.25, 0.25, 0.25));
-		codingRegionAtypicals.add(new State(0.25, 0.25, 0.25, 0.25));
-		codingRegionAtypicals.add(new State(0.25, 0.25, 0.25, 0.25));
+		codingRegionAtypicals.add(new State(0.3, 0.2, 0.25, 0.25));
+		codingRegionAtypicals.add(new State(0.25, 0.3, 0.2, 0.25));
+		codingRegionAtypicals.add(new State(0.3, 0.2, 0.3, 0.2));
 
 		stopCodons.add(new State(0.01, 0.97, 0.01, 0.01));
 		stopCodons.add(new State(0.97, 0.01, 0.01, 0.01));
 		stopCodons.add(new State(0.3, 0.15, 0.15, 0.3));
 
-		transition.setStartAtypical(0.2);
-		transition.setStartTypical(0.8);
-		transition.setTypicalTypical(0.5);
-		transition.setAtypicalAtypical(0.5);
-		transition.setTypicalStop(0.5);
-		transition.setAtypicalStop(0.5);
+		transition.setStartAtypical(0.36);
+		transition.setStartTypical(0.63);
+		transition.setTypicalTypical(0.98);
+		transition.setAtypicalAtypical(0.02);
+		transition.setTypicalStop(0.02);
+		transition.setAtypicalStop(0.98);
 
 	}
 
-	public void Probability() {
+	public void probability() {
+
 		startCodons.add(new State(0.8, 0.01, 0.01, 0.18));
 		startCodons.add(new State(0.01, 0.97, 0.01, 0.01));
 		startCodons.add(new State(0.01, 0.01, 0.01, 0.97));
@@ -58,7 +65,6 @@ public class HMM {
 		transition.setAtypicalAtypical(0.5);
 		transition.setTypicalStop(0.5);
 		transition.setAtypicalStop(0.5);
-
 	}
 
 	public void prediction(DNA dna) {
@@ -105,6 +111,12 @@ public class HMM {
 					* stopCodons.get(0).get(pgen.getBasaStopCodon()[0])
 					* stopCodons.get(1).get(pgen.getBasaStopCodon()[1])
 					* stopCodons.get(2).get(pgen.getBasaStopCodon()[2]);
+
+			if (deltaTypical3 > deltaATypical3) {
+				System.out.println("Gen Typical");
+			} else {
+				System.out.println("Gen ATypical");
+			}
 		}
 
 	}
@@ -130,7 +142,9 @@ public class HMM {
 					{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } },
 					{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } },
 					{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } } };
-
+			System.out.println(gen.getSequence());
+			System.out.println(gen.getBasaStartCodon());
+			System.out.println(gen.getBasaStopCodon());
 			// hitung alpha1
 			alphaTypical1 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
 					* startCodons.get(1).get(gen.getBasaStartCodon()[1])
@@ -371,7 +385,7 @@ public class HMM {
 							* transition.getAtypicalStop() * alphaATypical2);
 			// end hitung alpha3
 
-			// hitung beta1
+			// hitung beta1 startCodon
 			betaTypical1 = startCodons.get(0).get(gen.getBasaStartCodon()[0])
 					* startCodons.get(1).get(gen.getBasaStartCodon()[1])
 					* startCodons.get(2).get(gen.getBasaStartCodon()[2])
@@ -469,6 +483,18 @@ public class HMM {
 			typicalTypical = (1 - typicalStop);
 			atypicalAtypical = (1 - atypicalStop);
 
+			if (atypicalStop < 0.01) {
+				atypicalStop = atypicalStop + 0.01;
+				typicalStop = typicalStop - 0.01;
+				typicalTypical = typicalTypical + 0.01;
+				atypicalAtypical = atypicalAtypical - 0.01;
+			} else if (typicalStop < 0.01) {
+				typicalStop = typicalStop + 0.01;
+				atypicalStop = atypicalStop - 0.01;
+				atypicalAtypical = atypicalAtypical + 0.01;
+				typicalTypical = typicalTypical - 0.01;
+			}
+
 			double x = typicalStop + atypicalStop;
 
 			transition.setStartTypical(startTypical);
@@ -480,30 +506,30 @@ public class HMM {
 
 			System.out.println("startTypical: " + startTypical);
 			System.out.println("startATypical: " + startAtypical);
-			System.out.println("typcalTypical" + typicalTypical);
-			System.out.println("atypAtyp" + atypicalAtypical);
-			System.out.println("typicalStop: " + typicalStop);
-			System.out.println("atypStop: " + atypicalStop);
+			// System.out.println("typcalTypical" + typicalTypical);
+			// System.out.println("atypAtyp" + atypicalAtypical);
+			// System.out.println("typicalStop: " + typicalStop);
+			// System.out.println("atypStop: " + atypicalStop);
 
 			// ================================================================
 			// emition probability
 
 			// sum_state += (alpha char . beta char) / fwdbwd -> yg ini u/state
-			double sumStateStart = gen.sumStateStart();
 
-			double a_StartTyp1 = startCodons.get(0).get(
-					gen.getBasaStartCodon()[0])
-					* startCodons.get(1).get(gen.getBasaStartCodon()[1])
-					* startCodons.get(2).get(gen.getBasaStartCodon()[2])
-					* betaTypical2 / sumStateStart;
+			System.out.println(gen.sumStateStart(2));
+
+			double a_StartTyp1 = gen.sumCharStartTyp(0, 'a')
+					/ gen.sumStateStart(0);
+
 			double a_StartTyp2 = startCodons.get(1).get(
 					gen.getBasaStartCodon()[1])
 					* startCodons.get(2).get(gen.getBasaStartCodon()[2])
-					* betaTypical2 / sumStateStart;
+					* betaTypical2 / gen.sumStateStart(1);
 			double a_StartTyp3 = startCodons.get(2).get(
 					gen.getBasaStartCodon()[2])
-					* betaTypical2 / sumStateStart;
+					* betaTypical2 / gen.sumStateStart(2);
 
+			System.out.println(a_StartTyp1);
 			double sumStateTyp0 = gen.sumStateTypical(0);
 			double sumStateTyp1 = gen.sumStateTypical(1);
 			double sumStateTyp2 = gen.sumStateTypical(2);

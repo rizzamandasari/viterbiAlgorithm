@@ -221,11 +221,27 @@ public class Gen {
 		return sumChar;
 	}
 
-	public double sumStateStart() {
+	public double sumCharStartTyp(int state, char c) {
+		double sumChar = 0;
+		if (basaStartCodon[state] == c) {
+			sumChar = alphaTypical1.get(state) * betaTypical3.get(state);
+			return sumChar;
+		}
 
+		return 0;
+
+	}
+
+	public double sumStateStart(int state) {
 		double sumState = 0;
-		sumState = basaStartCodon[0];
 
+		int index = 0;
+		for (double alpha : alphaTypical1) {
+			if (index % 3 == state) {
+				sumState += alpha * betaTypical3.get(state);
+			}
+			index++;
+		}
 		return sumState;
 	}
 }
