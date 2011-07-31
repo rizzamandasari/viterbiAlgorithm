@@ -1,4 +1,6 @@
-class Transition {
+import java.io.Serializable;
+
+class Transition implements Serializable {
 	private double startAtypical;
 	private double startTypical;
 	private double typicalTypical;

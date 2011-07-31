@@ -1,4 +1,6 @@
-class State {
+import java.io.Serializable;
+
+class State implements Serializable {
 	private double a;
 	private double t;
 	private double c;

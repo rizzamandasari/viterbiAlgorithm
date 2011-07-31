@@ -175,6 +175,9 @@ public class Gen {
 		return sumState;
 	}
 
+	// blm dibagi fwdbwd
+	// sum_state += (alpha char . beta char) / fwdbwd -> yg ini u/state
+	// atg acg aga ccg att tga
 	public double sumStateATypical(int state) {
 		double sumState = 0;
 
@@ -182,8 +185,8 @@ public class Gen {
 
 		for (double alpha : alphaATypical2) {
 			if (index % 3 == state) {
-				sumState += alpha
-						* betaATypical2.get(alphaATypical2.size() - index - 1);
+				sumState += (alpha * betaATypical2.get(alphaATypical2.size()
+						- index - 1));
 			}
 			index++;
 		}
@@ -224,24 +227,76 @@ public class Gen {
 	public double sumCharStartTyp(int state, char c) {
 		double sumChar = 0;
 		if (basaStartCodon[state] == c) {
-			sumChar = alphaTypical1.get(state) * betaTypical3.get(state);
+			sumChar = (alphaTypical1.get(state) * betaTypical1.get(state));
+			// System.out.println("sumchar" + sumChar);
 			return sumChar;
 		}
-
 		return 0;
 
 	}
 
-	public double sumStateStart(int state) {
+	public double sumStateStartTyp(int state) {
 		double sumState = 0;
+		sumState = (alphaTypical1.get(state) * betaTypical1.get(state));
+		// System.out.println("sumState" + sumState);
+		return sumState;
+	}
 
-		int index = 0;
-		for (double alpha : alphaTypical1) {
-			if (index % 3 == state) {
-				sumState += alpha * betaTypical3.get(state);
-			}
-			index++;
+	public double sumCharStopTyp(int state, char c) {
+		double sumChar = 0;
+		if (basaStopCodon[state] == c) {
+			// System.out.println("a   --- " + alphaTypical3.get(state)+
+			// " ---  b" + betaTypical3.get(state));
+			sumChar = alphaTypical3.get(state) * betaTypical3.get(state);
+			// System.out.println("sumchar" + sumChar);
+			return sumChar;
 		}
+		return 0;
+
+	}
+
+	public double sumStateStopTyp(int state) {
+		double sumState = 0;
+		sumState = alphaTypical3.get(state) * betaTypical3.get(state);
+		// System.out.println("sumState" + sumState);
+		return sumState;
+	}
+
+	public double sumCharStartATyp(int state, char c) {
+		double sumChar = 0;
+		if (basaStartCodon[state] == c) {
+			sumChar = (alphaATypical1.get(state) * betaATypical1.get(state));
+			// System.out.println("sumchar" + sumChar);
+			return sumChar;
+		}
+		return 0;
+
+	}
+
+	public double sumStateStartATyp(int state) {
+		double sumState = 0;
+		sumState = (alphaATypical1.get(state) * betaATypical1.get(state));
+		// System.out.println("sumState" + sumState);
+		return sumState;
+	}
+
+	public double sumCharStopATyp(int state, char c) {
+		double sumChar = 0;
+		if (basaStopCodon[state] == c) {
+			// System.out.println("a   --- " + alphaTypical3.get(state)+
+			// " ---  b" + betaTypical3.get(state));
+			sumChar = alphaATypical3.get(state) * betaATypical3.get(state);
+			// System.out.println("sumchar" + sumChar);
+			return sumChar;
+		}
+		return 0;
+
+	}
+
+	public double sumStateStopATyp(int state) {
+		double sumState = 0;
+		sumState = alphaATypical3.get(state) * betaATypical3.get(state);
+		// System.out.println("sumState" + sumState);
 		return sumState;
 	}
 }
