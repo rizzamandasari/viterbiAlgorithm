@@ -121,6 +121,8 @@ public class DNA {
 						j++;
 					}
 					// System.out.println(startCodonIndex);
+					gen.setSequence(sequence.substring(startCodonIndex,
+							stopCodonIndex));
 					gen.setCodingRegion(codingRegion);
 
 				} else {
@@ -133,10 +135,10 @@ public class DNA {
 							new Integer(stopCodonIndex - 1),
 							new Integer(stopCodonIndex) };
 					gen.setStopCodon(stopCodon);
-					// sequence = sequence.replaceAll("a", "p").replaceAll("t",
-					// "q").replaceAll("g", "r").replaceAll("c", "s")
-					// .replaceAll("p", "t").replaceAll("q", "a")
-					// .replaceAll("r", "c").replaceAll("s", "g");
+					sequence = sequence.replaceAll("a", "p").replaceAll("t",
+							"q").replaceAll("g", "r").replaceAll("c", "s")
+							.replaceAll("p", "t").replaceAll("q", "a")
+							.replaceAll("r", "c").replaceAll("s", "g");
 					gen.setSequence(sequence.substring(stopCodonIndex,
 							startCodonIndex));
 

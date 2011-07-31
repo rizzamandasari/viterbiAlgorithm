@@ -14,7 +14,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		DNA dna = new DNA("file/seqNC005327.txt", "file/seqNC005327-gene.txt");
+		DNA dna = new DNA("file/b.txt", "file/b-gene.txt");
 		// DNA prediction = new DNA("file/a.txt");
 		// System.out.println(dna.getSequence());
 		// System.out.println(dna.getGenes());

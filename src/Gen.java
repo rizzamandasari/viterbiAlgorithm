@@ -126,6 +126,7 @@ public class Gen {
 
 	public char[] getBasaStartCodon() {
 		if (basaStartCodon == null) {
+			System.out.println(sequence);
 			basaStartCodon = sequence.substring(0, 3).toCharArray();
 		}
 		return basaStartCodon;
