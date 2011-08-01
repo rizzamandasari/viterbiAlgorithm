@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HMM implements Serializable {
@@ -71,7 +72,10 @@ public class HMM implements Serializable {
 	public void prediction(DNA dna) {
 		double deltaTypical1, deltaTypical2, deltaTypical3;
 		double deltaATypical1, deltaATypical2, deltaATypical3;
+		int indx = 0;
 
+		List<Gen> pgenes = new ArrayList<Gen>();
+		Collections.copy(pgenes, dna.getPredictionGenes());
 		for (Gen pgen : dna.getPredictionGenes()) {
 			deltaTypical1 = deltaTypical2 = deltaTypical3 = 1;
 			deltaATypical1 = deltaATypical2 = deltaATypical3 = 1;
@@ -115,8 +119,14 @@ public class HMM implements Serializable {
 
 			if (deltaTypical3 > deltaATypical3) {
 				System.out.println("Gen Typical");
+				// if (pgen.getSequence().length() > 1500) {
+				// dna.getPredictionGenes().remove(indx);
+				// }
 			} else {
 				System.out.println("Gen ATypical");
+				// if (pgen.getSequence().length() < 1500) {
+				// dna.getPredictionGenes().remove(indx);
+				// }
 			}
 		}
 
@@ -562,6 +572,21 @@ public class HMM implements Serializable {
 					.sumStateStartTyp(2)) + 0.01)
 					/ ((gen.sumStateStartTyp(2) / gen.sumStateStartTyp(2)) + 0.04);
 
+			startCodons.get(0).set(gen.getBasaStartCodon()[0], a_StartTyp1);
+			startCodons.get(0).set(gen.getBasaStartCodon()[1], t_StartTyp1);
+			startCodons.get(0).set(gen.getBasaStartCodon()[2], c_StartTyp1);
+			startCodons.get(0).set(gen.getBasaStartCodon()[3], g_StartTyp1);
+
+			startCodons.get(1).set(gen.getBasaStartCodon()[0], a_StartTyp2);
+			startCodons.get(1).set(gen.getBasaStartCodon()[1], t_StartTyp2);
+			startCodons.get(1).set(gen.getBasaStartCodon()[2], c_StartTyp2);
+			startCodons.get(1).set(gen.getBasaStartCodon()[3], g_StartTyp2);
+
+			startCodons.get(2).set(gen.getBasaStartCodon()[0], a_StartTyp3);
+			startCodons.get(2).set(gen.getBasaStartCodon()[1], t_StartTyp3);
+			startCodons.get(2).set(gen.getBasaStartCodon()[2], c_StartTyp3);
+			startCodons.get(2).set(gen.getBasaStartCodon()[3], g_StartTyp3);
+
 			// start atypical
 			double a_StartATyp1 = ((gen.sumCharStartATyp(0, 'a') / gen
 					.sumStateStartATyp(0)) + 0.01)
@@ -628,20 +653,20 @@ public class HMM implements Serializable {
 			// coding region
 			// sum_char += (alpha char . beta char) / fwdbwd ---> yg ini untuk
 			// for (int z = 1; z <= 3; z++) {
-			double a_Typ1 = gen.sumCharTypical(0, 'a') + 0.01 / sumStateTyp0;
-			double t_Typ1 = gen.sumCharTypical(0, 't') + 0.01 / sumStateTyp0;
-			double c_Typ1 = gen.sumCharTypical(0, 'c') + 0.01 / sumStateTyp0;
-			double g_Typ1 = gen.sumCharTypical(0, 'g') + 0.01 / sumStateTyp0;
+			double a_Typ1 = gen.sumCharTypical(0, 'a') / sumStateTyp0;
+			double t_Typ1 = gen.sumCharTypical(0, 't') / sumStateTyp0;
+			double c_Typ1 = gen.sumCharTypical(0, 'c') / sumStateTyp0;
+			double g_Typ1 = gen.sumCharTypical(0, 'g') / sumStateTyp0;
 
-			double a_Typ2 = gen.sumCharTypical(1, 'a') + 0.01 / sumStateTyp1;
-			double t_Typ2 = gen.sumCharTypical(1, 't') + 0.01 / sumStateTyp1;
-			double c_Typ2 = gen.sumCharTypical(1, 'c') + 0.01 / sumStateTyp1;
-			double g_Typ2 = gen.sumCharTypical(1, 'g') + 0.01 / sumStateTyp1;
+			double a_Typ2 = gen.sumCharTypical(1, 'a') / sumStateTyp1;
+			double t_Typ2 = gen.sumCharTypical(1, 't') / sumStateTyp1;
+			double c_Typ2 = gen.sumCharTypical(1, 'c') / sumStateTyp1;
+			double g_Typ2 = gen.sumCharTypical(1, 'g') / sumStateTyp1;
 
-			double a_Typ3 = gen.sumCharTypical(2, 'a') + 0.01 / sumStateTyp2;
-			double t_Typ3 = gen.sumCharTypical(2, 't') + 0.01 / sumStateTyp2;
-			double c_Typ3 = gen.sumCharTypical(2, 'c') + 0.01 / sumStateTyp2;
-			double g_Typ3 = gen.sumCharTypical(2, 'g') + 0.01 / sumStateTyp2;
+			double a_Typ3 = gen.sumCharTypical(2, 'a') / sumStateTyp2;
+			double t_Typ3 = gen.sumCharTypical(2, 't') / sumStateTyp2;
+			double c_Typ3 = gen.sumCharTypical(2, 'c') / sumStateTyp2;
+			double g_Typ3 = gen.sumCharTypical(2, 'g') / sumStateTyp2;
 
 			codingRegionTypicals.get(0).set(gen.getBasaCodingRegion()[0],
 					a_Typ1);
@@ -668,20 +693,20 @@ public class HMM implements Serializable {
 			codingRegionTypicals.get(2).set(gen.getBasaCodingRegion()[3],
 					g_Typ3);
 
-			double a_ATyp1 = gen.sumCharATypical(0, 'a') + 0.01 / sumStateTyp0;
-			double t_ATyp1 = gen.sumCharATypical(0, 't') + 0.01 / sumStateTyp0;
-			double c_ATyp1 = gen.sumCharATypical(0, 'c') + 0.01 / sumStateTyp0;
-			double g_ATyp1 = gen.sumCharATypical(0, 'g') + 0.01 / sumStateTyp0;
+			double a_ATyp1 = gen.sumCharATypical(0, 'a') / sumStateTyp0;
+			double t_ATyp1 = gen.sumCharATypical(0, 't') / sumStateTyp0;
+			double c_ATyp1 = gen.sumCharATypical(0, 'c') / sumStateTyp0;
+			double g_ATyp1 = gen.sumCharATypical(0, 'g') / sumStateTyp0;
 
-			double a_ATyp2 = gen.sumCharATypical(1, 'a') + 0.01 / sumStateTyp1;
-			double t_ATyp2 = gen.sumCharATypical(1, 't') + 0.01 / sumStateTyp1;
-			double c_ATyp2 = gen.sumCharATypical(1, 'c') + 0.01 / sumStateTyp1;
-			double g_ATyp2 = gen.sumCharATypical(1, 'g') + 0.01 / sumStateTyp1;
+			double a_ATyp2 = gen.sumCharATypical(1, 'a') / sumStateTyp1;
+			double t_ATyp2 = gen.sumCharATypical(1, 't') / sumStateTyp1;
+			double c_ATyp2 = gen.sumCharATypical(1, 'c') / sumStateTyp1;
+			double g_ATyp2 = gen.sumCharATypical(1, 'g') / sumStateTyp1;
 
-			double a_ATyp3 = gen.sumCharATypical(2, 'a') + 0.01 / sumStateTyp2;
-			double t_ATyp3 = gen.sumCharATypical(2, 't') + 0.01 / sumStateTyp2;
-			double c_ATyp3 = gen.sumCharATypical(2, 'c') + 0.01 / sumStateTyp2;
-			double g_ATyp3 = gen.sumCharATypical(2, 'g') + 0.01 / sumStateTyp2;
+			double a_ATyp3 = gen.sumCharATypical(2, 'a') / sumStateTyp2;
+			double t_ATyp3 = gen.sumCharATypical(2, 't') / sumStateTyp2;
+			double c_ATyp3 = gen.sumCharATypical(2, 'c') / sumStateTyp2;
+			double g_ATyp3 = gen.sumCharATypical(2, 'g') / sumStateTyp2;
 
 			codingRegionAtypicals.get(0).set(gen.getBasaCodingRegion()[0],
 					a_ATyp1);
@@ -747,6 +772,21 @@ public class HMM implements Serializable {
 			double g_StopTyp3 = (gen.sumCharStopTyp(2, 'g')
 					/ gen.sumStateStopTyp(2) + 0.01)
 					/ (gen.sumStateStopTyp(2) / gen.sumStateStopTyp(2) + 0.04);
+
+			stopCodons.get(0).set(gen.getBasaStopCodon()[0], a_StopTyp1);
+			stopCodons.get(0).set(gen.getBasaStopCodon()[1], t_StopTyp1);
+			stopCodons.get(0).set(gen.getBasaStopCodon()[2], c_StopTyp1);
+			stopCodons.get(0).set(gen.getBasaStopCodon()[3], g_StopTyp1);
+
+			stopCodons.get(1).set(gen.getBasaStopCodon()[0], a_StopTyp2);
+			stopCodons.get(1).set(gen.getBasaStopCodon()[1], t_StopTyp2);
+			stopCodons.get(1).set(gen.getBasaStopCodon()[2], c_StopTyp2);
+			stopCodons.get(1).set(gen.getBasaStopCodon()[3], g_StopTyp2);
+
+			stopCodons.get(2).set(gen.getBasaStopCodon()[0], a_StopTyp3);
+			stopCodons.get(2).set(gen.getBasaStopCodon()[1], t_StopTyp3);
+			stopCodons.get(2).set(gen.getBasaStopCodon()[2], c_StopTyp3);
+			stopCodons.get(2).set(gen.getBasaStopCodon()[3], g_StopTyp3);
 
 			System.out.println("Typical State 1 --> a : " + a_Typ1 + ",t : "
 					+ t_Typ1 + ",c : " + c_Typ1 + ",g :" + g_Typ1);
