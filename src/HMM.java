@@ -572,20 +572,20 @@ public class HMM implements Serializable {
 					.sumStateStartTyp(2)) + 0.01)
 					/ ((gen.sumStateStartTyp(2) / gen.sumStateStartTyp(2)) + 0.04);
 
-			startCodons.get(0).set(gen.getBasaStartCodon()[0], a_StartTyp1);
-			startCodons.get(0).set(gen.getBasaStartCodon()[1], t_StartTyp1);
-			startCodons.get(0).set(gen.getBasaStartCodon()[2], c_StartTyp1);
-			startCodons.get(0).set(gen.getBasaStartCodon()[3], g_StartTyp1);
+			startCodons.get(0).set('a', a_StartTyp1);
+			startCodons.get(0).set('t', t_StartTyp1);
+			startCodons.get(0).set('c', c_StartTyp1);
+			startCodons.get(0).set('g', g_StartTyp1);
 
-			startCodons.get(1).set(gen.getBasaStartCodon()[0], a_StartTyp2);
-			startCodons.get(1).set(gen.getBasaStartCodon()[1], t_StartTyp2);
-			startCodons.get(1).set(gen.getBasaStartCodon()[2], c_StartTyp2);
-			startCodons.get(1).set(gen.getBasaStartCodon()[3], g_StartTyp2);
+			startCodons.get(1).set('a', a_StartTyp2);
+			startCodons.get(1).set('t', t_StartTyp2);
+			startCodons.get(1).set('c', c_StartTyp2);
+			startCodons.get(1).set('g', g_StartTyp2);
 
-			startCodons.get(2).set(gen.getBasaStartCodon()[0], a_StartTyp3);
-			startCodons.get(2).set(gen.getBasaStartCodon()[1], t_StartTyp3);
-			startCodons.get(2).set(gen.getBasaStartCodon()[2], c_StartTyp3);
-			startCodons.get(2).set(gen.getBasaStartCodon()[3], g_StartTyp3);
+			startCodons.get(2).set('a', a_StartTyp3);
+			startCodons.get(2).set('t', t_StartTyp3);
+			startCodons.get(2).set('c', c_StartTyp3);
+			startCodons.get(2).set('g', g_StartTyp3);
 
 			// start atypical
 			double a_StartATyp1 = ((gen.sumCharStartATyp(0, 'a') / gen
@@ -773,20 +773,20 @@ public class HMM implements Serializable {
 					/ gen.sumStateStopTyp(2) + 0.01)
 					/ (gen.sumStateStopTyp(2) / gen.sumStateStopTyp(2) + 0.04);
 
-			stopCodons.get(0).set(gen.getBasaStopCodon()[0], a_StopTyp1);
-			stopCodons.get(0).set(gen.getBasaStopCodon()[1], t_StopTyp1);
-			stopCodons.get(0).set(gen.getBasaStopCodon()[2], c_StopTyp1);
-			stopCodons.get(0).set(gen.getBasaStopCodon()[3], g_StopTyp1);
+			stopCodons.get(0).set('a', a_StopTyp1);
+			stopCodons.get(0).set('t', t_StopTyp1);
+			stopCodons.get(0).set('c', c_StopTyp1);
+			stopCodons.get(0).set('g', g_StopTyp1);
 
-			stopCodons.get(1).set(gen.getBasaStopCodon()[0], a_StopTyp2);
-			stopCodons.get(1).set(gen.getBasaStopCodon()[1], t_StopTyp2);
-			stopCodons.get(1).set(gen.getBasaStopCodon()[2], c_StopTyp2);
-			stopCodons.get(1).set(gen.getBasaStopCodon()[3], g_StopTyp2);
+			stopCodons.get(1).set('a', a_StopTyp2);
+			stopCodons.get(1).set('t', t_StopTyp2);
+			stopCodons.get(1).set('c', c_StopTyp2);
+			stopCodons.get(1).set('g', g_StopTyp2);
 
-			stopCodons.get(2).set(gen.getBasaStopCodon()[0], a_StopTyp3);
-			stopCodons.get(2).set(gen.getBasaStopCodon()[1], t_StopTyp3);
-			stopCodons.get(2).set(gen.getBasaStopCodon()[2], c_StopTyp3);
-			stopCodons.get(2).set(gen.getBasaStopCodon()[3], g_StopTyp3);
+			stopCodons.get(2).set('a', a_StopTyp3);
+			stopCodons.get(2).set('t', t_StopTyp3);
+			stopCodons.get(2).set('c', c_StopTyp3);
+			stopCodons.get(2).set('g', g_StopTyp3);
 
 			System.out.println("Typical State 1 --> a : " + a_Typ1 + ",t : "
 					+ t_Typ1 + ",c : " + c_Typ1 + ",g :" + g_Typ1);
